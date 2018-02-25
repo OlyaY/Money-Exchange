@@ -11,12 +11,25 @@ module.exports = function makeExchange(currency) {
     } else if (currency === 0 || currency < 0) {
         delete obj;
     } else {
-        obj["H"] = Math.floor(currency / 50);
-        obj["Q"] = Math.floor((currency % 50) / 25);
-        obj["D"] = Math.floor(((currency % 50) % 25) / 10);
-        obj["N"] = Math.floor((((currency % 50) % 25) % 10) / 5);
-        obj["P"] = Math.floor(((((currency % 50) % 25) % 10) % 5) / 1);
+        if (currency >= 50) {
+            obj.H = Math.floor(currency / 50);
+            currency = currency - (obj.H * 50);
+        }
+        if (currency >= 25) {
+            obj.Q = Math.floor(currency / 25);
+            currency = currency - (obj.Q * 25);
+        }
+        if (currency >= 10) {
+            obj.D = Math.floor(currency / 10);
+            currency = currency - (obj.D * 10);
+        }
+        if (currency >= 5) {
+            obj.N = Math.floor(currency / 5);
+            currency = currency - (obj.N * 5);
+        }
+        if (currency > 0) {
+            obj.P = currency;
+        }
     }
-
     return obj;
 }
